@@ -1,4 +1,4 @@
-package: github.com/regcostajr/go-web3
+package: ubox.uchainscango-web3
 import:
 - package: golang.org/x/net
   subpackages:

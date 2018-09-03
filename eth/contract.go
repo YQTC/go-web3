@@ -25,11 +25,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/regcostajr/go-web3/complex/types"
-	"github.com/regcostajr/go-web3/dto"
+	"go-web3/complex/types"
+	"go-web3/dto"
 	"strings"
 
-	"github.com/regcostajr/go-web3/utils"
+	"go-web3/utils"
 	"math/big"
 )
 

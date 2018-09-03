@@ -22,7 +22,7 @@
 package block
 
 import (
-	"github.com/regcostajr/go-web3/utils"
+	"go-web3/utils"
 	"math/big"
 )
 

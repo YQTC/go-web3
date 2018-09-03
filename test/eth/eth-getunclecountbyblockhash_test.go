@@ -22,8 +22,8 @@
 package test
 
 import (
-	"github.com/regcostajr/go-web3"
-	"github.com/regcostajr/go-web3/providers"
+	"go-web3"
+	"go-web3/providers"
 	"testing"
 )
 
