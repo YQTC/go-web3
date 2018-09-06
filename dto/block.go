@@ -29,18 +29,18 @@ import (
 )
 
 type Block struct {
-	Number         *big.Int              `json:"number"`
-	Timestamp      *big.Int              `json:"timestamp"`
-	Transactions   []TransactionResponse `json:"transactions"` //todo 这里默认使用查询transactions的rps调用方式
-	Hash           string                `json:"hash"`
-	ParentHash     string                `json:"parentHash"`
-	Miner          string                `json:"miner,omitempty"`
-	Difficulty     *big.Int              `json:"difficulty"`
-	TotalDifficult *big.Int              `json:"totalDifficulty"`
-	Size           *big.Int              `json:"size"`
-	GasUsed        *big.Int              `json:"gasUsed"`
-	GasLimit       *big.Int              `json:"gasLimit"`
-	Nonce          *big.Int              `json:"nonce"`
+	Number         *big.Int `json:"number"`
+	Timestamp      *big.Int `json:"timestamp"`
+	Transactions   []string `json:"transactions"` //todo 这里默认使用查询transactions的rps调用方式
+	Hash           string   `json:"hash"`
+	ParentHash     string   `json:"parentHash"`
+	Miner          string   `json:"miner,omitempty"`
+	Difficulty     *big.Int `json:"difficulty"`
+	TotalDifficult *big.Int `json:"totalDifficulty"`
+	Size           *big.Int `json:"size"`
+	GasUsed        *big.Int `json:"gasUsed"`
+	GasLimit       *big.Int `json:"gasLimit"`
+	Nonce          *big.Int `json:"nonce"`
 	//Author         string                `json:"author,omitempty"`
 }
 

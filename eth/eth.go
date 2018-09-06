@@ -595,7 +595,7 @@ func (eth *Eth) GetBlockByNumber(number *big.Int, transactionDetails bool) (*dto
 	params := make([]interface{}, 2)
 	params[0] = utils.IntToHex(number)
 	//params[1] = transactionDetails
-	params[1] = true
+	params[1] = false
 
 	pointer := &dto.RequestResult{}
 
