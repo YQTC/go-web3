@@ -243,12 +243,6 @@ func (pointer *RequestResult) ToBlock() (*Block, error) {
 
 	result := (pointer).Result.(map[string]interface{})
 
-	fmt.Println("map******")
-	for key,value:=range result{
-		fmt.Println(key,value)
-	}
-
-
 	if len(result) == 0 {
 		return nil, customerror.EMPTYRESPONSE
 	}
@@ -256,8 +250,6 @@ func (pointer *RequestResult) ToBlock() (*Block, error) {
 	block := &Block{}
 
 	marshal, err := json.Marshal(result)
-	fmt.Println("marshal******")
-	fmt.Println(string(marshal))
 	if err != nil {
 		return nil, customerror.UNPARSEABLEINTERFACE
 	}
