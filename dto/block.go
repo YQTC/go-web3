@@ -29,16 +29,32 @@ import (
 )
 
 type Block struct {
-	Number     *big.Int `json:"number"`
-	Hash       string   `json:"hash"`
-	ParentHash string   `json:"parentHash"`
-	Author     string   `json:"author,omitempty"`
-	Miner      string   `json:"miner,omitempty"`
-	Size       *big.Int `json:"size"`
-	GasUsed    *big.Int `json:"gasUsed"`
-	Nonce      *big.Int `json:"nonce"`
-	Timestamp  *big.Int `json:"timestamp"`
+	Number         *big.Int              `json:"number"`
+	Timestamp      *big.Int              `json:"timestamp"`
+	Transactions   []TransactionResponse `json:"transactions"` //todo 这里默认使用查询transactions的rps调用方式
+	Hash           string                `json:"hash"`
+	ParentHash     string                `json:"parentHash"`
+	Miner          string                `json:"miner,omitempty"`
+	Difficulty     *big.Int              `json:"difficulty"`
+	TotalDifficult *big.Int              `json:"totalDifficulty"`
+	Size           *big.Int              `json:"size"`
+	GasUsed        *big.Int              `json:"gasUsed"`
+	GasLimit       *big.Int              `json:"gasLimit"`
+	Nonce          *big.Int              `json:"nonce"`
+	//Author         string                `json:"author,omitempty"`
 }
+
+//type Block struct {
+//	Number     *big.Int `json:"number"`
+//	Hash       string   `json:"hash"`
+//	ParentHash string   `json:"parentHash"`
+//	Author     string   `json:"author,omitempty"`
+//	Miner      string   `json:"miner,omitempty"`
+//	Size       *big.Int `json:"size"`
+//	GasUsed    *big.Int `json:"gasUsed"`
+//	Nonce      *big.Int `json:"nonce"`
+//	Timestamp  *big.Int `json:"timestamp"`
+//}
 
 /**
  * How to un-marshal the block struct using the Big.Int rather than the
@@ -47,11 +63,14 @@ type Block struct {
 func (b *Block) UnmarshalJSON(data []byte) error {
 	type Alias Block
 	temp := &struct {
-		Number    string `json:"number"`
-		Size      string `json:"size"`
-		GasUsed   string `json:"gasUsed"`
-		Nonce     string `json:"nonce"`
-		Timestamp string `json:"timestamp"`
+		Number          string `json:"number"`
+		Size            string `json:"size"`
+		GasUsed         string `json:"gasUsed"`
+		GasLimit        string `json:"gasLimit"`
+		Nonce           string `json:"nonce"`
+		Timestamp       string `json:"timestamp"`
+		Difficulty      string `json:"difficulty"`
+		TotalDifficulty string `json:"totalDifficulty"`
 		*Alias
 	}{
 		Alias: (*Alias)(b),
@@ -91,11 +110,32 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
 	}
 
+	difficult, success := big.NewInt(0).SetString(temp.Difficulty[2:], 16)
+
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
+	}
+
+	totaldifficult, success := big.NewInt(0).SetString(temp.TotalDifficulty[2:], 16)
+
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
+	}
+
+	gaslimit, success := big.NewInt(0).SetString(temp.TotalDifficulty[2:], 16)
+
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
+	}
+
 	b.Number = num
 	b.Size = size
 	b.GasUsed = gas
 	b.Nonce = nonce
 	b.Timestamp = timestamp
+	b.Difficulty = difficult
+	b.TotalDifficult = totaldifficult
+	b.GasLimit = gaslimit
 
 	return nil
 }

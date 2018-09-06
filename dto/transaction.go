@@ -122,7 +122,7 @@ type TransactionReceipt struct {
 	Logs              []TransactionLogs `json:"logs"`
 	LogsBloom         string            `json:"logsBloom"`
 	Root              string            `json:"string"`
-	Status            bool              `json:"status"`
+	Status            bool              `json:"status"` //todo 这里默认为true
 }
 
 type TransactionLogs struct {
@@ -258,7 +258,7 @@ func (r *TransactionReceipt) UnmarshalJSON(data []byte) error {
 		BlockNumber       string `json:"blockNumber"`
 		CumulativeGasUsed string `json:"cumulativeGasUsed"`
 		GasUsed           string `json:"gasUsed"`
-		Status            string `json:"status"`
+		//Status            string `json:"status"`
 		*Alias
 	}{
 		Alias: (*Alias)(r),
@@ -292,19 +292,20 @@ func (r *TransactionReceipt) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.CumulativeGasUsed))
 	}
 
-	status, success := big.NewInt(0).SetString(temp.Status[2:], 16)
-	if !success {
-		return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.Status))
-	}
+	//rpc recipt do not have status in return
+	//status, success := big.NewInt(0).SetString(temp.Status[2:], 16)
+	//if !success {
+	//	return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.Status))
+	//}
 
 	r.TransactionIndex = txIndex
 	r.BlockNumber = blockNum
 	r.CumulativeGasUsed = cumulativeGas
 	r.GasUsed = gasUsed
 	r.Status = false
-	if status.Cmp(big.NewInt(1)) == 0 {
-		r.Status = true
-	}
+	//if status.Cmp(big.NewInt(1)) == 0 {
+	//	r.Status = true
+	//}
 
 	return nil
 }
