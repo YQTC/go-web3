@@ -35,6 +35,7 @@ type Block struct {
 	Hash           string   `json:"hash"`
 	ParentHash     string   `json:"parentHash"`
 	Miner          string   `json:"miner,omitempty"`
+	MixHash        string   `json:"mixHash"`
 	Difficulty     *big.Int `json:"difficulty"`
 	TotalDifficult *big.Int `json:"totalDifficulty"`
 	Size           *big.Int `json:"size"`
