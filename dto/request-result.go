@@ -105,6 +105,23 @@ func (pointer *RequestResult) ToInt() (int64, error) {
 
 }
 
+func (pointer *RequestResult) ToFloat() (float64, error) {
+
+	if err := pointer.checkResponse(); err != nil {
+		return 0, err
+	}
+
+	result := (pointer).Result.(interface{})
+
+	numericResult, err := result.(float64)
+	if !err {
+		return 0, fmt.Errorf("can not convert result to float64")
+	}
+
+	return numericResult, nil
+
+}
+
 func (pointer *RequestResult) ToBigInt() (*big.Int, error) {
 
 	if err := pointer.checkResponse(); err != nil {
@@ -244,10 +261,9 @@ func (pointer *RequestResult) ToBlock() (*Block, error) {
 	result := (pointer).Result.(map[string]interface{})
 
 	fmt.Println("map******")
-	for key,value:=range result{
-		fmt.Println(key,value)
+	for key, value := range result {
+		fmt.Println(key, value)
 	}
-
 
 	if len(result) == 0 {
 		return nil, customerror.EMPTYRESPONSE
