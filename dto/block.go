@@ -42,6 +42,7 @@ type Block struct {
 	GasUsed        *big.Int `json:"gasUsed"`
 	GasLimit       *big.Int `json:"gasLimit"`
 	Nonce          *big.Int `json:"nonce"`
+	ExtraData 	   string `json:"extraData"`
 	//Author         string                `json:"author,omitempty"`
 }
 
