@@ -124,7 +124,7 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
 	}
 
-	gaslimit, success := big.NewInt(0).SetString(temp.TotalDifficulty[2:], 16)
+	gaslimit, success := big.NewInt(0).SetString(temp.GasLimit[2:], 16)
 
 	if !success {
 		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
