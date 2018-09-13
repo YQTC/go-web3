@@ -24,6 +24,7 @@ package web3
 import (
 	"go-web3/dto"
 	"go-web3/eth"
+	"go-web3/miner"
 	"go-web3/net"
 	"go-web3/personal"
 	"go-web3/plotter"
@@ -44,6 +45,7 @@ type Web3 struct {
 	Personal *personal.Personal
 	Utils    *utils.Utils
 	Plotter  *plotter.Plotter
+	Miner    *miner.Miner
 }
 
 // NewWeb3 - Web3 Module constructor to set the default provider, Eth, Net and Personal
@@ -55,6 +57,7 @@ func NewWeb3(provider providers.ProviderInterface) *Web3 {
 	web3.Personal = personal.NewPersonal(provider)
 	web3.Utils = utils.NewUtils(provider)
 	web3.Plotter = plotter.NewPlotter(provider)
+	web3.Miner = miner.NewMiner(provider)
 	return web3
 }
 
