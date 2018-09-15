@@ -607,6 +607,29 @@ func (eth *Eth) GetBlockByNumber(number *big.Int, transactionDetails bool) (*dto
 
 	return pointer.ToBlock()
 }
+// GetBlockPocByNumber - Returns the poc information about a block requested by number.
+// Reference: uchain add rpc
+// Parameters:
+//    - number, QUANTITY - number of block
+// Returns:
+//    1. Object - A block poc object, or null when no transaction was found
+//    2. error
+
+func (eth *Eth) GetBlockPocByNumber(number *big.Int) (*dto.Poc, error) {
+
+	params := make([]interface{}, 1)
+	params[0] = utils.IntToHex(number)
+
+	pointer := &dto.RequestResult{}
+
+	err := eth.provider.SendRequest(pointer, "eth_getBlockPocByNumber", params)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return pointer.ToPoc()
+}
 
 // GetBlockTransactionCountByHash
 // Reference: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbyhash

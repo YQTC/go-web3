@@ -277,6 +277,31 @@ func (pointer *RequestResult) ToBlock() (*Block, error) {
 
 }
 
+func (pointer *RequestResult) ToPoc() (*Poc, error) {
+
+	if err := pointer.checkResponse(); err != nil {
+		return nil, err
+	}
+
+	result := (pointer).Result.(map[string]interface{})
+
+	if len(result) == 0 {
+		return nil, customerror.EMPTYRESPONSE
+	}
+
+	poc := &Poc{}
+
+	marshal, err := json.Marshal(result)
+	if err != nil {
+		return nil, customerror.UNPARSEABLEINTERFACE
+	}
+
+	err = json.Unmarshal([]byte(marshal), poc)
+
+	return poc, err
+
+}
+
 func (pointer *RequestResult) ToSyncingResponse() (*SyncingResponse, error) {
 
 	if err := pointer.checkResponse(); err != nil {
