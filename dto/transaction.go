@@ -122,7 +122,7 @@ type TransactionReceipt struct {
 	Logs              []TransactionLogs `json:"logs"`
 	LogsBloom         string            `json:"logsBloom"`
 	Root              string            `json:"string"`
-	Status            bool              `json:"status"` //todo 这里默认为true
+	Status            *big.Int          `json:"status"` //todo 这里默认为true
 }
 
 type TransactionLogs struct {
@@ -162,7 +162,7 @@ func (t *TransactionResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	if len(temp.BlockNumber) == 0 {
-		temp.BlockNumber = "0x"
+		temp.BlockNumber = "0x0"
 	}
 
 	blockNum, success := big.NewInt(0).SetString(temp.BlockNumber[2:], 16)
@@ -172,7 +172,7 @@ func (t *TransactionResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	if len(temp.TransactionIndex) == 0 {
-		temp.TransactionIndex = "0x"
+		temp.TransactionIndex = "0x0"
 	}
 
 	txIndex, success := big.NewInt(0).SetString(temp.TransactionIndex[2:], 16)
@@ -258,7 +258,7 @@ func (r *TransactionReceipt) UnmarshalJSON(data []byte) error {
 		BlockNumber       string `json:"blockNumber"`
 		CumulativeGasUsed string `json:"cumulativeGasUsed"`
 		GasUsed           string `json:"gasUsed"`
-		//Status            string `json:"status"`
+		Status            string `json:"status"`
 		*Alias
 	}{
 		Alias: (*Alias)(r),
@@ -292,20 +292,16 @@ func (r *TransactionReceipt) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.CumulativeGasUsed))
 	}
 
-	//rpc recipt do not have status in return
-	//status, success := big.NewInt(0).SetString(temp.Status[2:], 16)
-	//if !success {
-	//	return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.Status))
-	//}
+	status, success := big.NewInt(0).SetString(temp.Status[2:], 16)
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to BigInt", temp.Status))
+	}
 
 	r.TransactionIndex = txIndex
 	r.BlockNumber = blockNum
 	r.CumulativeGasUsed = cumulativeGas
 	r.GasUsed = gasUsed
-	r.Status = false
-	//if status.Cmp(big.NewInt(1)) == 0 {
-	//	r.Status = true
-	//}
+	r.Status = status
 
 	return nil
 }

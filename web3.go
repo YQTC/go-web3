@@ -29,6 +29,7 @@ import (
 	"go-web3/personal"
 	"go-web3/plotter"
 	"go-web3/providers"
+	"go-web3/txpool"
 	"go-web3/utils"
 )
 
@@ -46,6 +47,7 @@ type Web3 struct {
 	Utils    *utils.Utils
 	Plotter  *plotter.Plotter
 	Miner    *miner.Miner
+	Txpool   *txpool.Txpool
 }
 
 // NewWeb3 - Web3 Module constructor to set the default provider, Eth, Net and Personal
@@ -58,6 +60,7 @@ func NewWeb3(provider providers.ProviderInterface) *Web3 {
 	web3.Utils = utils.NewUtils(provider)
 	web3.Plotter = plotter.NewPlotter(provider)
 	web3.Miner = miner.NewMiner(provider)
+	web3.Txpool = txpool.NewTxpool(provider)
 	return web3
 }
 
