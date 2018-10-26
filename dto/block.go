@@ -42,7 +42,9 @@ type Block struct {
 	GasUsed        *big.Int `json:"gasUsed"`
 	GasLimit       *big.Int `json:"gasLimit"`
 	Nonce          *big.Int `json:"nonce"`
-	ExtraData 	   string `json:"extraData"`
+	ExtraData      string   `json:"extraData"`
+	Reward         *big.Int `json:"reward"`
+	Txfees         *big.Int `json:"txfees"`
 	//Author         string                `json:"author,omitempty"`
 }
 
@@ -73,6 +75,8 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		Timestamp       string `json:"timestamp"`
 		Difficulty      string `json:"difficulty"`
 		TotalDifficulty string `json:"totalDifficulty"`
+		Reward          string `json:"reward"`
+		Txfees          string `json:"txfees"`
 		*Alias
 	}{
 		Alias: (*Alias)(b),
@@ -130,6 +134,18 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
 	}
 
+	reward, success := big.NewInt(0).SetString(temp.Reward[2:], 16)
+
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
+	}
+
+	txfees, success := big.NewInt(0).SetString(temp.Txfees[2:], 16)
+
+	if !success {
+		return errors.New(fmt.Sprintf("Error converting %s to bigInt", temp.Timestamp))
+	}
+
 	b.Number = num
 	b.Size = size
 	b.GasUsed = gas
@@ -138,6 +154,8 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 	b.Difficulty = difficult
 	b.TotalDifficult = totaldifficult
 	b.GasLimit = gaslimit
+	b.Reward = reward
+	b.Txfees = txfees
 
 	return nil
 }
